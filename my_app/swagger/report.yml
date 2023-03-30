@@ -1,0 +1,37 @@
+summary: List of drivers
+description: Returns a list of all reports
+parameters:
+  - name: format
+    in: query
+    description: The format of the response (json or xml)
+    required: false
+    type: string
+    enum:
+      - json
+      - xml
+responses:
+  200:
+    description: List of all reports
+    schema:
+      type: array
+      items:
+        $ref: '#/definitions/DriverFull'
+
+
+definitions:
+  DriverFull:
+    type: object
+    properties:
+      abbr:
+        type: string
+      fullname:
+        type: string
+      team:
+        type: string
+      time:
+        type: string
+    example:
+      abbr: "SVF"
+      fullname: "Sebastian Vettel"
+      team: "FERRARI"
+      time: "0:01:04.415000"
