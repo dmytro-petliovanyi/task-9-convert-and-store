@@ -1,15 +1,14 @@
 import os
+from typing import Optional
 
 from dotenv import load_dotenv
 from report_of_monaco_racing import groper
 
 from my_app.functions_view import get_abbr
-from my_app.models import DriverModel, db
+from my_app.models import DriverModel
 
 
-def fill_driver_table(path: str):
-    db.drop_tables([DriverModel])
-    db.create_tables([DriverModel])
+def fill_driver_table(path: Optional[str]):
     for driver in groper(path):
         new_driver = DriverModel(abbr=get_abbr(driver),
                                  fullname=driver.fullname,
@@ -30,6 +29,6 @@ def fill_driver_table(path: str):
 if __name__ == "__main__":
     load_dotenv()
     fill_driver_table(os.environ.get("RACE_INFO_DIR"))
-    query = DriverModel.select()
+    query = sorted(DriverModel.select(), key=lambda x: x.time)
     for driver in query:
         print(driver.abbr)

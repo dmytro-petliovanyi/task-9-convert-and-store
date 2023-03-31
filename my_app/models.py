@@ -1,18 +1,22 @@
-from peewee import *
+import os
+
+from dotenv import load_dotenv
+from peewee import CharField, Model, SqliteDatabase, TimeField
+
+load_dotenv()
+db = SqliteDatabase(os.environ.get("DATABASE"))
 
 
-db = SqliteDatabase("../drivers_database.db")
+class BaseModel(Model):
+    class Meta:
+        database = db
 
 
-class DriverModel(Model):
+class DriverModel(BaseModel):
     abbr = CharField()
     fullname = CharField()
     team = CharField()
     time = TimeField()
 
-    class Meta:
-        database = db
-
 
 db.create_tables([DriverModel])
-

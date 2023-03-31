@@ -23,6 +23,16 @@ class HandleMyData:
             if driver.abbr == driver_id:
                 return driver
 
+    def racers_add_place(self, racers_list_of_dict: list[dict]) -> list[dict]:
+        for index in range(0, len(racers_list_of_dict)):
+            racers_list_of_dict[index] = self.add_place(racers_list_of_dict[index], index + 1)
+        return racers_list_of_dict
+
+    @staticmethod
+    def add_place(racer_dict: dict, place) -> dict:
+        racer_dict["place"] = place
+        return racer_dict
+
     @staticmethod
     def racer_to_full_dict(racer: DriverModel) -> dict:
         return {"abbr": racer.abbr,
@@ -59,4 +69,3 @@ def format_check(form: str | None, racers_list_or_dict: list[dict] | dict, code:
     data = format_handle(racers_list_or_dict, form)
 
     return make_response(data, code)
-

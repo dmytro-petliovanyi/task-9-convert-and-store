@@ -9,11 +9,11 @@ from my_app.models import DriverModel
 class Report(Resource):
     @swag_from('swagger/report.yml')
     def get(self) -> Response:
-        query = DriverModel.select()
+        query = sorted(DriverModel.select(), key=lambda x: x.time)
         handle = HandleMyData(query)
         args = request.args.to_dict()
 
-        racers_list = handle.racers_list_of_full_dict()
+        racers_list = handle.racers_add_place(handle.racers_list_of_full_dict())
 
         return format_check(args.get("format"), racers_list, 200)
 

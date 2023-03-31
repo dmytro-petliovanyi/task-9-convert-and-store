@@ -15,17 +15,19 @@ responses:
     schema:
       type: array
       items:
-        $ref: '#/definitions/DriverFull'
+        $ref: '#/definitions/DriverFullPlace'
 
 
 definitions:
-  DriverFull:
+  DriverFullPlace:
     type: object
     properties:
       abbr:
         type: string
       fullname:
         type: string
+      place:
+        type: integer
       team:
         type: string
       time:
@@ -33,5 +35,6 @@ definitions:
     example:
       abbr: "SVF"
       fullname: "Sebastian Vettel"
+      place: 1
       team: "FERRARI"
       time: "0:01:04.415000"
