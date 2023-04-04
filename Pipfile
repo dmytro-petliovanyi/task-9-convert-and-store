@@ -16,6 +16,7 @@ task-6-report-of-monaco-2018-racing-by-petliovany = {version = "*", index = "tes
 python-dotenv = "*"
 dicttoxml = "*"
 pre-commit = "*"
+pytest = "*"
 
 [dev-packages]
 flake8 = "*"

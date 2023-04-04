@@ -9,24 +9,22 @@ from my_app.my_settings.constants import FormatEnum
 
 
 class HandleMyData:
-    def __init__(self, query: list[DriverModel]) -> None:
-        self._drivers_data = query
+    def racers_list_of_full_dict(self, racers: list[DriverModel]) -> list[dict]:
+        return [self.racer_to_full_dict(racer) for racer in racers]
 
-    def racers_list_of_full_dict(self) -> list[dict]:
-        return [self.racer_to_full_dict(racer) for racer in self._drivers_data]
-
-    def racers_list_of_small_dict(self) -> list[dict]:
-        return [self.racer_to_small_dict(racer) for racer in self._drivers_data]
-
-    def find_racer(self, driver_id: str) -> DriverModel | None:
-        for driver in self._drivers_data:
-            if driver.abbr == driver_id:
-                return driver
+    def racers_list_of_small_dict(self, racers: list[DriverModel]) -> list[dict]:
+        return [self.racer_to_small_dict(racer) for racer in racers]
 
     def racers_add_place(self, racers_list_of_dict: list[dict]) -> list[dict]:
         for index in range(0, len(racers_list_of_dict)):
             racers_list_of_dict[index] = self.add_place(racers_list_of_dict[index], index + 1)
         return racers_list_of_dict
+
+    @staticmethod
+    def find_racer(driver_id: str, racers: list[DriverModel]) -> DriverModel | None:
+        for driver in racers:
+            if driver.abbr == driver_id:
+                return driver
 
     @staticmethod
     def add_place(racer_dict: dict, place) -> dict:

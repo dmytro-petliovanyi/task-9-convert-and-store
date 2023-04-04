@@ -1,10 +1,6 @@
-import os
+from peewee import CharField, Model, TimeField
 
-from dotenv import load_dotenv
-from peewee import CharField, Model, SqliteDatabase, TimeField
-
-load_dotenv()
-db = SqliteDatabase(os.environ.get("DATABASE"))
+from my_app.database import db
 
 
 class BaseModel(Model):
@@ -17,6 +13,3 @@ class DriverModel(BaseModel):
     fullname = CharField()
     team = CharField()
     time = TimeField()
-
-
-db.create_tables([DriverModel])

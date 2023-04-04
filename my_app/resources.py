@@ -10,10 +10,10 @@ class Report(Resource):
     @swag_from('swagger/report.yml')
     def get(self) -> Response:
         query = sorted(DriverModel.select(), key=lambda x: x.time)
-        handle = HandleMyData(query)
+        handle = HandleMyData()
         args = request.args.to_dict()
 
-        racers_list = handle.racers_add_place(handle.racers_list_of_full_dict())
+        racers_list = handle.racers_add_place(handle.racers_list_of_full_dict(query))
 
         return format_check(args.get("format"), racers_list, 200)
 
@@ -22,10 +22,10 @@ class Drivers(Resource):
     @swag_from('swagger/drivers.yml')
     def get(self) -> Response:
         query = DriverModel.select()
-        handle = HandleMyData(query)
+        handle = HandleMyData()
         args = request.args
 
-        racers_list_of_dict = handle.racers_list_of_small_dict()
+        racers_list_of_dict = handle.racers_list_of_small_dict(query)
 
         return format_check(args.get("format"), racers_list_of_dict, 200)
 
@@ -34,10 +34,10 @@ class Driver(Resource):
     @swag_from("swagger/driver.yml")
     def get(self, driver_id: str) -> Response:
         query = DriverModel.select()
-        handle = HandleMyData(query)
+        handle = HandleMyData()
         args = request.args.to_dict()
         driver_id = driver_id.strip().upper()
-        driver = handle.find_racer(driver_id)
+        driver = handle.find_racer(driver_id, query)
 
         if driver:
             driver_dict = handle.racer_to_full_dict(driver)
