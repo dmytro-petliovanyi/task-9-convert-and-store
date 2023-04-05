@@ -1,53 +1,53 @@
 import xml.etree.ElementTree as Et
 from unittest.mock import patch
 
-from test_my_app.conftest import (full_list_of_dict_for_test,
+from test_my_app.conftest import (drivers_query_for_tests,
+                                  full_list_of_dict_for_test,
                                   full_list_of_dict_for_test_with_place,
                                   full_list_of_dict_for_test_with_place_desc,
-                                  racers_for_patch,
                                   small_list_of_dict_for_test)
 
 
-@patch("my_app.functions_view.HandleMyData._drivers_data", return_value=racers_for_patch)
-def test_report_default_route(patch_groper, client):
+@patch("my_app.resources.get_drivers_query", return_value=drivers_query_for_tests)
+def test_report_default_route(patch_drivers_query, client):
     response = client.get("/api/v1/report/")
-    patch_groper.assert_called()
+    patch_drivers_query.assert_called()
     assert response.status_code == 200
     for racer in full_list_of_dict_for_test_with_place:
         assert racer in response.json
 
 
-@patch("my_app.functions_view.groper", return_value=racers_for_patch)
-def test_report_desc_route(patch_groper, client):
+@patch("my_app.resources.get_drivers_query", return_value=drivers_query_for_tests)
+def test_report_desc_route(patch_drivers_query, client):
     response = client.get("/api/v1/report/?order=desc")
-    patch_groper.assert_called()
+    patch_drivers_query.assert_called()
     assert response.status_code == 200
     for racer in full_list_of_dict_for_test_with_place_desc:
         assert racer in response.json
 
 
-@patch("my_app.functions_view.groper", return_value=racers_for_patch)
-def test_report_asc_route(patch_groper, client):
+@patch("my_app.resources.get_drivers_query", return_value=drivers_query_for_tests)
+def test_report_asc_route(patch_drivers_query, client):
     response = client.get("/api/v1/report/?order=asc")
-    patch_groper.assert_called()
+    patch_drivers_query.assert_called()
     assert response.status_code == 200
     for racer in full_list_of_dict_for_test_with_place:
         assert racer in response.json
 
 
-@patch("my_app.functions_view.groper", return_value=racers_for_patch)
-def test_report_json_route(patch_groper, client):
+@patch("my_app.resources.get_drivers_query", return_value=drivers_query_for_tests)
+def test_report_json_route(patch_drivers_query, client):
     response = client.get("/api/v1/report/?format=json")
-    patch_groper.assert_called()
+    patch_drivers_query.assert_called()
     assert response.status_code == 200
     for racer in full_list_of_dict_for_test_with_place:
         assert racer in response.json
 
 
-@patch("my_app.functions_view.groper", return_value=racers_for_patch)
-def test_report_xml_route(patch_groper, client):
+@patch("my_app.resources.get_drivers_query", return_value=drivers_query_for_tests)
+def test_report_xml_route(patch_drivers_query, client):
     response = client.get("/api/v1/report/?format=xml")
-    patch_groper.assert_called()
+    patch_drivers_query.assert_called()
     assert response.status_code == 200
 
     root = Et.fromstring(response.data)
@@ -62,19 +62,19 @@ def test_report_xml_route(patch_groper, client):
         assert item.find("time").text == racer_dict["time"]
 
 
-@patch("my_app.functions_view.groper", return_value=racers_for_patch)
-def test_drivers_default_route(patch_groper, client):
+@patch("my_app.resources.get_drivers_query", return_value=drivers_query_for_tests)
+def test_drivers_default_route(patch_drivers_query, client):
     response = client.get("/api/v1/report/drivers/")
-    patch_groper.assert_called()
+    patch_drivers_query.assert_called()
     assert response.status_code == 200
     for racer in small_list_of_dict_for_test:
         assert racer in response.json
 
 
-@patch("my_app.functions_view.groper", return_value=racers_for_patch)
-def test_drivers_xml_route(patch_groper, client):
+@patch("my_app.resources.get_drivers_query", return_value=drivers_query_for_tests)
+def test_drivers_xml_route(patch_drivers_query, client):
     response = client.get("/api/v1/report/drivers/?format=xml")
-    patch_groper.assert_called()
+    patch_drivers_query.assert_called()
     assert response.status_code == 200
 
     root = Et.fromstring(response.data)
@@ -86,18 +86,18 @@ def test_drivers_xml_route(patch_groper, client):
         assert item.find("fullname").text == racer_dict["fullname"]
 
 
-@patch("my_app.functions_view.groper", return_value=racers_for_patch)
-def test_driver_default_route(patch_groper, client):
+@patch("my_app.resources.get_single_driver", return_value=drivers_query_for_tests[0])
+def test_driver_default_route(patch_single_driver, client):
     response = client.get("/api/v1/report/drivers/DRR/")
-    patch_groper.assert_called()
+    patch_single_driver.assert_called()
     assert response.status_code == 200
     assert full_list_of_dict_for_test[0] == response.json
 
 
-@patch("my_app.functions_view.groper", return_value=racers_for_patch)
-def test_driver_xml_route(patch_groper, client):
+@patch("my_app.resources.get_single_driver", return_value=drivers_query_for_tests[0])
+def test_driver_xml_route(patch_single_driver, client):
     response = client.get("/api/v1/report/drivers/DRR/?format=xml")
-    patch_groper.assert_called()
+    patch_single_driver.assert_called()
     assert response.status_code == 200
 
     root = Et.fromstring(response.data)
@@ -108,9 +108,9 @@ def test_driver_xml_route(patch_groper, client):
     assert root.find("time").text == racer_dict["time"]
 
 
-@patch("my_app.functions_view.groper", return_value=racers_for_patch)
-def test_driver_not_found(patch_groper, client):
+@patch("my_app.resources.get_single_driver", return_value=None)
+def test_driver_not_found(patch_single_driver, client):
     response = client.get("/api/v1/report/drivers/SGV/")
-    patch_groper.assert_called()
+    patch_single_driver.assert_called()
     assert response.status_code == 404
     assert 'Driver not found' == response.json

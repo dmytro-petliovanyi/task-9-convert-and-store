@@ -3,16 +3,24 @@ from flask import Response, jsonify, make_response, request
 from flask_restful import Resource
 
 from my_app.functions_view import HandleMyData, format_check
+from my_app.my_settings.constants import OrderEnum
 from my_app.work_with_db.servises import get_drivers_query, get_single_driver
 
 
 class Report(Resource):
     @swag_from('swagger/report.yml')
     def get(self) -> Response:
-        query = sorted(get_drivers_query(), key=lambda x: x.time)
+
         handle = HandleMyData()
         args = request.args.to_dict()
+        order_bool = False
 
+        if args.get("order"):
+            order = OrderEnum(args.get("order"))
+
+            order_bool = True if order == OrderEnum.desc else False
+
+        query = sorted(get_drivers_query(), key=lambda x: x.time, reverse=order_bool)
         racers_list = handle.racers_add_place(handle.racers_list_of_full_dict(query))
 
         return format_check(args.get("format"), racers_list, 200)

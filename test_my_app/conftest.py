@@ -6,6 +6,7 @@ from report_of_monaco_racing import Racer
 from my_app import app
 from my_app.api import api  # noqa
 from my_app.my_settings.config import TestConfig
+from my_app.work_with_db.models import DriverModel
 
 full_list_of_dict_for_test_with_place = [
     {
@@ -114,11 +115,24 @@ racers_for_patch = [
     ]
 
 
+drivers_query_for_tests = [
+    DriverModel(abbr="DRR",
+                fullname=racers_for_patch[0].fullname,
+                team=racers_for_patch[0].team,
+                time=racers_for_patch[0].best_lap),
+    DriverModel(abbr="SVF",
+                fullname=racers_for_patch[1].fullname,
+                team=racers_for_patch[1].team,
+                time=racers_for_patch[1].best_lap),
+    DriverModel(abbr="LHM",
+                fullname=racers_for_patch[2].fullname,
+                team=racers_for_patch[2].team,
+                time=racers_for_patch[2].best_lap),
+]
+
+
 @pytest.fixture
 def client():
     app.config.from_object(TestConfig)
     with app.test_client() as client:
         yield client
-
-
-TEST_DATABASE = "C:/Users/petli/PycharmProjects/task-9-convert-and-store-data-to-the-database/test_my_app/test_db.db"

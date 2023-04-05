@@ -9,6 +9,14 @@ parameters:
     enum:
       - json
       - xml
+  - name: order
+    in: query
+    description: The order to sort drivers (asc or desc)
+    required: false
+    type: string
+    enum:
+      - asc
+      - desc
 responses:
   200:
     description: List of all reports
