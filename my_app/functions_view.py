@@ -21,12 +21,6 @@ class HandleMyData:
         return racers_list_of_dict
 
     @staticmethod
-    def find_racer(driver_id: str, racers: list[DriverModel]) -> DriverModel | None:
-        for driver in racers:
-            if driver.abbr == driver_id:
-                return driver
-
-    @staticmethod
     def add_place(racer_dict: dict, place) -> dict:
         racer_dict["place"] = place
         return racer_dict
