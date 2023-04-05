@@ -1,6 +1,6 @@
 from peewee import CharField, Model, TimeField
 
-from my_app.database import db
+from my_app.work_with_db.database import db
 
 
 class BaseModel(Model):

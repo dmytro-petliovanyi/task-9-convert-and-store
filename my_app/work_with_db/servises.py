@@ -1,5 +1,5 @@
-from my_app.models import DriverModel
-from my_app.repository import DriverRepository, DriversRepository
+from my_app.work_with_db.models import DriverModel
+from my_app.work_with_db.repository import DriverRepository, DriversRepository
 
 
 def get_drivers_query() -> list[DriverModel]:

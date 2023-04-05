@@ -4,7 +4,7 @@ import os
 from report_of_monaco_racing import Racer, groper
 
 from my_app.functions_view import get_abbr
-from my_app.models import DriverModel, db
+from my_app.work_with_db.models import DriverModel, db
 
 logging.basicConfig(
     level=logging.DEBUG,

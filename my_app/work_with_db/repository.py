@@ -1,4 +1,4 @@
-from my_app.models import DriverModel
+from my_app.work_with_db.models import DriverModel
 
 
 class DriversRepository:
