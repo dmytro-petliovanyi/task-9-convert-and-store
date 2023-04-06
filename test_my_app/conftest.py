@@ -5,8 +5,31 @@ from report_of_monaco_racing import Racer
 
 from my_app import app
 from my_app.api import api  # noqa
+from my_app.functions_view import get_abbr
 from my_app.my_settings.config import TestConfig
 from my_app.work_with_db.models import DriverModel
+
+racers_for_patch = [
+        Racer(
+            'Daniel Ricciardo',
+            'RED BULL RACING TAG HEUER',
+            datetime.time(12, 14, 12, 54000),
+            datetime.time(12, 11, 24, 67000)
+        ),
+        Racer(
+            'Sebastian Vettel',
+            'FERRARI',
+            datetime.time(12, 2, 58, 917000),
+            datetime.time(12, 4, 3, 332000)
+        ),
+        Racer(
+            'Lewis Hamilton',
+            'MERCEDES',
+            datetime.time(12, 18, 20, 125000),
+            datetime.time(12, 11, 32, 585000)
+        )
+    ]
+
 
 full_list_of_dict_for_test_with_place = [
     {
@@ -59,80 +82,29 @@ full_list_of_dict_for_test_with_place_desc = [
 
 full_list_of_dict_for_test = [
     {
-        "abbr": "DRR",
-        "fullname": "Daniel Ricciardo",
-        "team": "RED BULL RACING TAG HEUER",
-        "time": "0:02:47.987000"
-    },
-    {
-        "abbr": "SVF",
-        "fullname": "Sebastian Vettel",
-        "team": "FERRARI",
-        "time": "0:01:04.415000"
-    },
-    {
-        "abbr": "LHM",
-        "fullname": "Lewis Hamilton",
-        "team": "MERCEDES",
-        "time": "0:06:47.540000"
-    }
+        "abbr": get_abbr(racer),
+        "fullname": racer.fullname,
+        "team": racer.team,
+        "time": str(racer.best_lap)
+    } for racer in racers_for_patch
 ]
 
 small_list_of_dict_for_test = [
     {
-        "abbr": "DRR",
-        "fullname": "Daniel Ricciardo",
-    },
-    {
-        "abbr": "SVF",
-        "fullname": "Sebastian Vettel",
-    },
-    {
-        "abbr": "LHM",
-        "fullname": "Lewis Hamilton"
+        "abbr": get_abbr(racer),
+        "fullname": racer.fullname,
     }
+    for racer in racers_for_patch
 ]
 
-racers_for_patch = [
-        Racer(
-            'Daniel Ricciardo',
-            'RED BULL RACING TAG HEUER',
-            datetime.time(12, 14, 12, 54000),
-            datetime.time(12, 11, 24, 67000)
-        ),
-        Racer(
-            'Sebastian Vettel',
-            'FERRARI',
-            datetime.time(12, 2, 58, 917000),
-            datetime.time(12, 4, 3, 332000)
-        ),
-        Racer(
-            'Lewis Hamilton',
-            'MERCEDES',
-            datetime.time(12, 18, 20, 125000),
-            datetime.time(12, 11, 32, 585000)
-        )
-    ]
-
-
-drivers_query_for_tests = [
-    DriverModel(abbr="DRR",
-                fullname=racers_for_patch[0].fullname,
-                team=racers_for_patch[0].team,
-                time=racers_for_patch[0].best_lap),
-    DriverModel(abbr="SVF",
-                fullname=racers_for_patch[1].fullname,
-                team=racers_for_patch[1].team,
-                time=racers_for_patch[1].best_lap),
-    DriverModel(abbr="LHM",
-                fullname=racers_for_patch[2].fullname,
-                team=racers_for_patch[2].team,
-                time=racers_for_patch[2].best_lap),
-]
+drivers_query_for_tests = [DriverModel(abbr=get_abbr(racer),
+                                       fullname=racer.fullname,
+                                       team=racer.team,
+                                       time=racer.best_lap) for racer in racers_for_patch]
 
 
 @pytest.fixture
 def client():
     app.config.from_object(TestConfig)
     with app.test_client() as client:
-        yield client
+        return client

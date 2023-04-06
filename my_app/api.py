@@ -2,7 +2,8 @@ from flasgger import Swagger
 from flask_restful import Api
 
 from my_app import app
-from my_app.resources import Driver, Drivers, Report
+
+from .resources import Driver, Drivers, Report
 
 api = Api(app)
 swagger = Swagger(app=app)

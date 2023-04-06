@@ -1,16 +1,10 @@
-import logging
-import os
+from my_settings import db
+from report_of_monaco_racing import Racer
+from work_with_db.models import DriverModel
 
-from report_of_monaco_racing import Racer, groper
+from logging_config import logging
 
-from my_app.functions_view import get_abbr
-from my_app.work_with_db.models import DriverModel, db
-
-logging.basicConfig(
-    level=logging.DEBUG,
-    format='%(asctime)s %(levelname)s %(message)s',
-    handlers=[logging.StreamHandler()]
-)
+from .functions_view import get_abbr
 
 
 def fill_driver_table(drivers: list[Racer]) -> None:
@@ -27,7 +21,3 @@ def fill_driver_table(drivers: list[Racer]) -> None:
         query = DriverModel.select()
         for item in query:
             logging.info(f"Created row with id: {item} and driver_id:{item.abbr}")
-
-
-if __name__ == "__main__":
-    fill_driver_table(groper(os.environ.get("RACE_INFO_DIR")))

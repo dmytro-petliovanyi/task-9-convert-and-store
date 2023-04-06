@@ -4,8 +4,8 @@ from dicttoxml import dicttoxml
 from flask import Response, jsonify, make_response
 from report_of_monaco_racing import Racer
 
-from my_app.my_settings.constants import FormatEnum
-from my_app.work_with_db.models import DriverModel
+from .my_settings.constants import FormatEnum
+from .work_with_db.models import DriverModel
 
 
 class HandleMyData:
