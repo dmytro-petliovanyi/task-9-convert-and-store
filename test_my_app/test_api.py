@@ -8,7 +8,7 @@ from test_my_app.conftest import (drivers_query_for_tests,
                                   small_list_of_dict_for_test)
 
 
-@patch("my_app.resources.get_drivers_query", return_value=drivers_query_for_tests)
+@patch("my_app.resources.DriversRepository.get", return_value=drivers_query_for_tests)
 def test_report_default_route(patch_drivers_query, client):
     response = client.get("/api/v1/report/")
     patch_drivers_query.assert_called()
@@ -17,7 +17,7 @@ def test_report_default_route(patch_drivers_query, client):
         assert racer in response.json
 
 
-@patch("my_app.resources.get_drivers_query", return_value=drivers_query_for_tests)
+@patch("my_app.resources.DriversRepository.get", return_value=drivers_query_for_tests)
 def test_report_desc_route(patch_drivers_query, client):
     response = client.get("/api/v1/report/?order=desc")
     patch_drivers_query.assert_called()
@@ -26,7 +26,7 @@ def test_report_desc_route(patch_drivers_query, client):
         assert racer in response.json
 
 
-@patch("my_app.resources.get_drivers_query", return_value=drivers_query_for_tests)
+@patch("my_app.resources.DriversRepository.get", return_value=drivers_query_for_tests)
 def test_report_asc_route(patch_drivers_query, client):
     response = client.get("/api/v1/report/?order=asc")
     patch_drivers_query.assert_called()
@@ -35,7 +35,7 @@ def test_report_asc_route(patch_drivers_query, client):
         assert racer in response.json
 
 
-@patch("my_app.resources.get_drivers_query", return_value=drivers_query_for_tests)
+@patch("my_app.resources.DriversRepository.get", return_value=drivers_query_for_tests)
 def test_report_json_route(patch_drivers_query, client):
     response = client.get("/api/v1/report/?format=json")
     patch_drivers_query.assert_called()
@@ -44,7 +44,7 @@ def test_report_json_route(patch_drivers_query, client):
         assert racer in response.json
 
 
-@patch("my_app.resources.get_drivers_query", return_value=drivers_query_for_tests)
+@patch("my_app.resources.DriversRepository.get", return_value=drivers_query_for_tests)
 def test_report_xml_route(patch_drivers_query, client):
     response = client.get("/api/v1/report/?format=xml")
     patch_drivers_query.assert_called()
@@ -62,7 +62,7 @@ def test_report_xml_route(patch_drivers_query, client):
         assert item.find("time").text == racer_dict["time"]
 
 
-@patch("my_app.resources.get_drivers_query", return_value=drivers_query_for_tests)
+@patch("my_app.resources.DriversRepository.get", return_value=drivers_query_for_tests)
 def test_drivers_default_route(patch_drivers_query, client):
     response = client.get("/api/v1/report/drivers/")
     patch_drivers_query.assert_called()
@@ -71,7 +71,7 @@ def test_drivers_default_route(patch_drivers_query, client):
         assert racer in response.json
 
 
-@patch("my_app.resources.get_drivers_query", return_value=drivers_query_for_tests)
+@patch("my_app.resources.DriversRepository.get", return_value=drivers_query_for_tests)
 def test_drivers_xml_route(patch_drivers_query, client):
     response = client.get("/api/v1/report/drivers/?format=xml")
     patch_drivers_query.assert_called()
@@ -86,7 +86,7 @@ def test_drivers_xml_route(patch_drivers_query, client):
         assert item.find("fullname").text == racer_dict["fullname"]
 
 
-@patch("my_app.resources.get_single_driver", return_value=drivers_query_for_tests[0])
+@patch("my_app.resources.DriversRepository.get_single", return_value=drivers_query_for_tests[0])
 def test_driver_default_route(patch_single_driver, client):
     response = client.get("/api/v1/report/drivers/DRR/")
     patch_single_driver.assert_called()
@@ -94,7 +94,7 @@ def test_driver_default_route(patch_single_driver, client):
     assert full_list_of_dict_for_test[0] == response.json
 
 
-@patch("my_app.resources.get_single_driver", return_value=drivers_query_for_tests[0])
+@patch("my_app.resources.DriversRepository.get_single", return_value=drivers_query_for_tests[0])
 def test_driver_xml_route(patch_single_driver, client):
     response = client.get("/api/v1/report/drivers/DRR/?format=xml")
     patch_single_driver.assert_called()
@@ -108,7 +108,7 @@ def test_driver_xml_route(patch_single_driver, client):
     assert root.find("time").text == racer_dict["time"]
 
 
-@patch("my_app.resources.get_single_driver", return_value=None)
+@patch("my_app.resources.DriversRepository.get_single", return_value=None)
 def test_driver_not_found(patch_single_driver, client):
     response = client.get("/api/v1/report/drivers/SGV/")
     patch_single_driver.assert_called()

@@ -4,7 +4,7 @@ from flask_restful import Resource
 
 from .functions_view import HandleMyData, format_check
 from .my_settings.constants import OrderEnum
-from .work_with_db.servises import get_drivers_query, get_single_driver
+from .work_with_db.repository import DriversRepository
 
 
 class Report(Resource):
@@ -20,7 +20,7 @@ class Report(Resource):
 
             order_bool = True if order == OrderEnum.desc else False
 
-        query = sorted(get_drivers_query(), key=lambda x: x.time, reverse=order_bool)
+        query = sorted(DriversRepository().get(), key=lambda x: x.time, reverse=order_bool)
         racers_list = handle.racers_add_place(handle.racers_list_of_full_dict(query))
 
         return format_check(args.get("format"), racers_list, 200)
@@ -29,7 +29,7 @@ class Report(Resource):
 class Drivers(Resource):
     @swag_from('swagger/drivers.yml')
     def get(self) -> Response:
-        query = get_drivers_query()
+        query = DriversRepository().get()
         handle = HandleMyData()
         args = request.args
 
@@ -44,7 +44,7 @@ class Driver(Resource):
         handle = HandleMyData()
         args = request.args.to_dict()
         driver_id = driver_id.strip().upper()
-        driver = get_single_driver(driver_id)
+        driver = DriversRepository().get_single(driver_id)
 
         if driver:
             driver_dict = handle.racer_to_full_dict(driver)

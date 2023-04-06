@@ -1,10 +1,9 @@
-from my_settings import db
 from report_of_monaco_racing import Racer
-from work_with_db.models import DriverModel
 
 from logging_config import logging
 
 from .functions_view import get_abbr
+from .work_with_db.models import DriverModel, db
 
 
 def fill_driver_table(drivers: list[Racer]) -> None:
