@@ -2,9 +2,9 @@ from flasgger import swag_from
 from flask import Response, jsonify, make_response, request
 from flask_restful import Resource
 
+from .db.repository import DriversRepository
 from .functions_view import HandleMyData, format_check
 from .my_settings.constants import OrderEnum
-from .work_with_db.repository import DriversRepository
 
 
 class Report(Resource):

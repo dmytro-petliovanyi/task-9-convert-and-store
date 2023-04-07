@@ -9,7 +9,10 @@ class BaseModel(Model):
 
 
 class DriverModel(BaseModel):
-    abbr = CharField()
+    abbr = CharField(unique=True)
     fullname = CharField()
     team = CharField()
     time = TimeField()
+
+
+all_models = {"Driver": DriverModel}

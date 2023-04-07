@@ -5,9 +5,9 @@ from report_of_monaco_racing import Racer
 
 from my_app import app
 from my_app.api import api  # noqa
+from my_app.db.models import DriverModel
 from my_app.functions_view import get_abbr
 from my_app.my_settings.config import TestConfig
-from my_app.work_with_db.models import DriverModel
 
 racers_for_patch = [
         Racer(
