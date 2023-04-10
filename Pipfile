@@ -15,6 +15,7 @@ peewee = "*"
 task-6-report-of-monaco-2018-racing-by-petliovany = {version = "*", index = "testpypi"}
 dicttoxml = "*"
 pre-commit = "*"
+typer = "*"
 
 [dev-packages]
 flake8 = "*"
