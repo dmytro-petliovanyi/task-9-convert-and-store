@@ -2,11 +2,11 @@ from peewee import IntegrityError
 
 from logging_config import logging
 
-from .models import DriverModel, db
+from .models import DriverModel, all_models, db
 
 
 class DriversRepository:
-    model = DriverModel
+    model = all_models[0]
 
     def get(self) -> list[DriverModel]:
         return self.model.select()
