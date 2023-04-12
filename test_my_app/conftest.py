@@ -1,12 +1,11 @@
 import datetime
 
 import pytest
-from peewee import SqliteDatabase
 from report_of_monaco_racing import Racer
 
 from my_app import app
 from my_app.api import api  # noqa
-from my_app.db.models import DriverModel, all_models
+from my_app.db.models import DriverModel
 from my_app.functions_view import get_abbr
 from my_app.my_settings.config import TestConfig
 
@@ -98,7 +97,8 @@ small_list_of_dict_for_test = [
     for racer in racers_for_patch
 ]
 
-drivers_query_for_tests = [DriverModel(abbr=get_abbr(racer),
+drivers_query_for_tests = [DriverModel(id=racers_for_patch.index(racer)+1,
+                                       abbr=get_abbr(racer),
                                        fullname=racer.fullname,
                                        team=racer.team,
                                        time=racer.best_lap) for racer in racers_for_patch]
@@ -109,18 +109,3 @@ def client():
     app.config.from_object(TestConfig)
     with app.test_client() as client:
         return client
-
-
-@pytest.fixture
-def db():
-    test_db = SqliteDatabase(':memory:')
-    test_db.bind(all_models, bind_refs=False, bind_backrefs=False)
-
-    test_db.connect()
-    test_db.create_tables(all_models)
-
-    yield test_db
-
-    test_db.drop_tables(all_models)
-
-    test_db.close()
