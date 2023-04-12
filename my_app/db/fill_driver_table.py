@@ -1,32 +1,24 @@
 import typer
-from peewee import IntegrityError
 from report_of_monaco_racing import groper
 
 from logging_config import logging
 from my_app.functions_view import get_abbr
-from my_app.my_settings.constants import DIR_RACE_INFO
+from my_app.my_settings.constants import RACE_INFO_DIR
 
 from .models import all_models, db
+from .repository import DriversRepository
 
 fill_app = typer.Typer()
 
 
 @fill_app.command("fill")
 def fill_driver_table() -> None:
-    model = all_models[0]
-    db.create_tables([model])
-
     create_info = [{"abbr": get_abbr(driver),
                     "fullname": driver.fullname,
                     "team": driver.team,
-                    "time": driver.best_lap} for driver in groper(DIR_RACE_INFO)]
+                    "time": driver.best_lap} for driver in groper(RACE_INFO_DIR)]
 
-    for item in create_info:
-        try:
-            model.insert(**item).execute()
-            logging.info(f"Created row with id: {item} and driver_id: {item['abbr']}")
-        except IntegrityError:
-            logging.warning(f"Skipping duplicate entry with driver_id: {item['abbr']}")
+    DriversRepository().create_from_list(create_info)
 
 
 @fill_app.command("init")
