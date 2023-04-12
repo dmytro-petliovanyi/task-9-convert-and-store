@@ -1,6 +1,6 @@
 from peewee import CharField, Model, TimeField
 
-from ..my_settings import db
+from my_app.my_settings import db
 
 
 class BaseModel(Model):
@@ -15,4 +15,4 @@ class DriverModel(BaseModel):
     time = TimeField()
 
 
-all_models = {"Driver": DriverModel}
+all_models = [DriverModel]
