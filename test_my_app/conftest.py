@@ -1,11 +1,12 @@
 import datetime
 
 import pytest
+from peewee import SqliteDatabase
 from report_of_monaco_racing import Racer
 
 from my_app import app
 from my_app.api import api  # noqa
-from my_app.db.models import DriverModel
+from my_app.db.models import DriverModel, all_models
 from my_app.functions_view import get_abbr
 from my_app.my_settings.config import TestConfig
 
@@ -109,3 +110,18 @@ def client():
     app.config.from_object(TestConfig)
     with app.test_client() as client:
         return client
+
+
+@pytest.fixture(scope="session")
+def test_db():
+    db = SqliteDatabase(":memory:")
+    with db.bind_ctx(all_models):
+        db.create_tables(all_models)
+        yield db
+    with db.bind_ctx(all_models):
+        db.drop_tables(all_models)
+
+
+@pytest.fixture(scope="function")
+def db(test_db):
+    yield test_db

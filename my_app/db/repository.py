@@ -1,7 +1,9 @@
 from peewee import IntegrityError
+from report_of_monaco_racing import Racer
 
 from logging_config import logging
 
+from ..functions_view import get_abbr
 from .models import DriverModel, all_models, db
 
 
@@ -14,12 +16,11 @@ class DriversRepository:
     def get_single(self, abbr: str) -> DriverModel | None:
         return self.model.get_or_none(DriverModel.abbr == abbr)
 
-    def create_from_list(self, rows: list[dict]):
-        create_info = [self.model(id=rows.index(driver)+1,
-                                  abbr=driver["abbr"],
-                                  fullname=driver["fullname"],
-                                  team=driver["team"],
-                                  time=driver["time"]) for driver in rows]
+    def create_from_list(self, rows: list[Racer]):
+        create_info = [self.model(abbr=get_abbr(driver),
+                                  fullname=driver.fullname,
+                                  team=driver.team,
+                                  time=driver.best_lap) for driver in rows]
         with db.atomic():
             for driver in create_info:
                 try:
