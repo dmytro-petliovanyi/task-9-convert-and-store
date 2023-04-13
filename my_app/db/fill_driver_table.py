@@ -2,8 +2,8 @@ import typer
 from report_of_monaco_racing import groper
 
 from logging_config import logging
+from my_app.my_settings.constants import RACE_INFO_DIR
 
-from ..my_settings.constants import RACE_INFO_DIR
 from .models import all_models, db
 from .repository import DriversRepository
 

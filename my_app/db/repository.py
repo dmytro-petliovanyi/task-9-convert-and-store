@@ -2,8 +2,8 @@ from peewee import IntegrityError
 from report_of_monaco_racing import Racer
 
 from logging_config import logging
+from my_app.functions_view import get_abbr
 
-from ..functions_view import get_abbr
 from .models import DriverModel, all_models, db
 
 
