@@ -20,7 +20,7 @@ class Report(Resource):
 
             order_bool = True if order == OrderEnum.desc else False
 
-        query = sorted(DriversRepository().get(), key=lambda x: x.time, reverse=order_bool)
+        query = sorted(DriversRepository.get(), key=lambda x: x.time, reverse=order_bool)
         racers_list = handle.racers_add_place(handle.racers_list_of_full_dict(query))
 
         return format_check(args.get("format"), racers_list, 200)
@@ -29,7 +29,7 @@ class Report(Resource):
 class Drivers(Resource):
     @swag_from('swagger/drivers.yml')
     def get(self) -> Response:
-        query = DriversRepository().get()
+        query = DriversRepository.get()
         handle = HandleMyData()
         args = request.args
 
@@ -44,7 +44,7 @@ class Driver(Resource):
         handle = HandleMyData()
         args = request.args.to_dict()
         driver_id = driver_id.strip().upper()
-        driver = DriversRepository().get_single(driver_id)
+        driver = DriversRepository.get_single(driver_id)
 
         if driver:
             driver_dict = handle.racer_to_full_dict(driver)

@@ -10,17 +10,20 @@ from .models import DriverModel, all_models, db
 class DriversRepository:
     model = all_models[0]
 
-    def get(self) -> list[DriverModel]:
-        return self.model.select()
+    @classmethod
+    def get(cls) -> list[DriverModel]:
+        return cls.model.select()
 
-    def get_single(self, abbr: str) -> DriverModel | None:
-        return self.model.get_or_none(DriverModel.abbr == abbr)
+    @classmethod
+    def get_single(cls, abbr: str) -> DriverModel | None:
+        return cls.model.get_or_none(DriverModel.abbr == abbr)
 
-    def create_from_list(self, rows: list[Racer]):
-        create_info = [self.model(abbr=get_abbr(driver),
-                                  fullname=driver.fullname,
-                                  team=driver.team,
-                                  time=driver.best_lap) for driver in rows]
+    @classmethod
+    def create_from_list(cls, rows: list[Racer]):
+        create_info = [cls.model(abbr=get_abbr(driver),
+                                 fullname=driver.fullname,
+                                 team=driver.team,
+                                 time=driver.best_lap) for driver in rows]
         with db.atomic():
             for driver in create_info:
                 try:

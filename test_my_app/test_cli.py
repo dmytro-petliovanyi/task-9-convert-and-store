@@ -13,7 +13,7 @@ def test_cli_help():
 
 
 def test_cli_fill(db):
-    DriversRepository().create_from_list(racers_for_patch)
+    DriversRepository.create_from_list(racers_for_patch)
 
     drivers = all_models[0].select()
     assert len(drivers) == 3
@@ -28,24 +28,24 @@ def test_cli_init(db):
 
 
 def test_repo_get(db):
-    DriversRepository().create_from_list(racers_for_patch)
+    DriversRepository.create_from_list(racers_for_patch)
 
-    result = DriversRepository().get()
+    result = DriversRepository.get()
     assert [driver for driver in result] == [driver for driver in drivers_query_for_tests]
     assert [driver.abbr for driver in result] == [driver.abbr for driver in drivers_query_for_tests]
 
 
 def test_repo_get_single(db):
-    DriversRepository().create_from_list(racers_for_patch)
+    DriversRepository.create_from_list(racers_for_patch)
 
-    result = DriversRepository().get_single("SVF")
+    result = DriversRepository.get_single("SVF")
     assert result == drivers_query_for_tests[1]
     assert result == drivers_query_for_tests[1]
 
 
 def test_repo_create_from_list(db):
-    DriversRepository().create_from_list(racers_for_patch)
+    DriversRepository.create_from_list(racers_for_patch)
 
-    result = DriversRepository().get()
+    result = DriversRepository.get()
     assert [driver for driver in result] == [driver for driver in drivers_query_for_tests]
     assert [driver.abbr for driver in result] == [driver.abbr for driver in drivers_query_for_tests]

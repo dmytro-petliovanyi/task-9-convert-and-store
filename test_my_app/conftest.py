@@ -1,6 +1,7 @@
 import datetime
 
 import pytest
+from flask.testing import FlaskClient
 from peewee import SqliteDatabase
 from report_of_monaco_racing import Racer
 
@@ -106,22 +107,21 @@ drivers_query_for_tests = [DriverModel(id=racers_for_patch.index(racer)+1,
 
 
 @pytest.fixture
-def client():
+def client() -> FlaskClient:
     app.config.from_object(TestConfig)
     with app.test_client() as client:
         return client
 
 
 @pytest.fixture(scope="session")
-def test_db():
+def test_db() -> SqliteDatabase:
     db = SqliteDatabase(":memory:")
     with db.bind_ctx(all_models):
-        db.create_tables(all_models)
         yield db
-    with db.bind_ctx(all_models):
-        db.drop_tables(all_models)
 
 
 @pytest.fixture(scope="function")
-def db(test_db):
+def db(test_db) -> SqliteDatabase:
+    test_db.create_tables(all_models)
     yield test_db
+    test_db.drop_tables(all_models)

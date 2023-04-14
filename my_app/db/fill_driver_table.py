@@ -12,7 +12,7 @@ fill_app = typer.Typer()
 
 @fill_app.command("fill")
 def fill_driver_table() -> None:
-    DriversRepository().create_from_list(
+    DriversRepository.create_from_list(
         groper(
             RACE_INFO_DIR
         )
