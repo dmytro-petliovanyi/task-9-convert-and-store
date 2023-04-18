@@ -8,6 +8,7 @@ from report_of_monaco_racing import Racer
 from my_app import app
 from my_app.api import api  # noqa
 from my_app.db.models import DriverModel, all_models
+from my_app.db.repository import DriversRepository
 from my_app.functions_view import get_abbr
 from my_app.my_settings.config import TestConfig
 
@@ -125,3 +126,9 @@ def db(test_db) -> SqliteDatabase:
     test_db.create_tables(all_models)
     yield test_db
     test_db.drop_tables(all_models)
+
+
+@pytest.fixture
+def repo(db):
+    DriversRepository.model.bind(db, bind_refs=False, bind_backrefs=False)
+    return DriversRepository()
