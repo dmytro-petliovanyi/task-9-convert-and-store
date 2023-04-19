@@ -1,4 +1,5 @@
 import datetime
+from typing import Generator
 
 import pytest
 from flask.testing import FlaskClient
@@ -122,13 +123,13 @@ def test_db() -> SqliteDatabase:
 
 
 @pytest.fixture(scope="function")
-def db(test_db) -> SqliteDatabase:
+def db(test_db: SqliteDatabase) -> SqliteDatabase:
     test_db.create_tables(all_models)
     yield test_db
     test_db.drop_tables(all_models)
 
 
-@pytest.fixture
-def repo(db):
+@pytest.fixture(scope="function")
+def repo(db: SqliteDatabase) -> Generator[DriversRepository, None, None]:
     DriversRepository.model.bind(db, bind_refs=False, bind_backrefs=False)
-    return DriversRepository()
+    yield DriversRepository()
