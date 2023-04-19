@@ -3,7 +3,7 @@ from enum import Enum
 
 RACE_INFO_DIR = os.environ.get("RACE_INFO_DIR")
 
-DATABASE = ":memory:" if os.environ.get("ENV") == "TESTING" else os.environ.get("DATABASE")
+DATABASE = os.environ.get("DATABASE", ":memory:")
 
 swagger_config = {
     'title': 'My API'
