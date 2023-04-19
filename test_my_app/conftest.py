@@ -108,7 +108,7 @@ drivers_query_for_tests = [DriverModel(id=racers_for_patch.index(racer)+1,
                                        time=racer.best_lap) for racer in racers_for_patch]
 
 
-@pytest.fixture
+@pytest.fixture(scope="session")
 def client() -> FlaskClient:
     app.config.from_object(TestConfig)
     with app.test_client() as client:
